@@ -12,9 +12,16 @@ npm install
 
 Second, rename .env.example to .env or copy .env.example and name it .env
 
-Third, fill all the .env usually only need the DATABASE_URL
+Third, fill all the .env if needed to change then change it
 
-Fourth, run the development server
+Fourth, run migration
+
+```bash
+npx prisma db push
+# if needed to install then install it
+```
+
+Fifth, run the development server
 
 ```bash
 npm run dev
