@@ -14,13 +14,51 @@ datasource db {
 }
 
 model User {
+   id          String        @id @default(cuid())
+   email       String        @unique
+   firstName   String
+   lastName    String
+   password    String
+   createdAt   DateTime      @default(now())
+   updatedAt   DateTime      @default(now()) @updatedAt
+   SavingsUser SavingsUser[]
+
+   @@map("users")
+}
+
+model Savings {
+   id          String        @id @default(cuid())
+   creatorId   String
+   createdAt   DateTime      @default(now())
+   updatedAt   DateTime      @default(now()) @updatedAt
+   SavingsLog  SavingsLog[]
+   SavingsUser SavingsUser[]
+
+   @@index([id, creatorId])
+   @@map("savings")
+}
+
+model SavingsLog {
+   id          String   @id @default(cuid())
+   savingsId   String
+   savings     Savings  @relation(fields: [savingsId], references: [id])
+   amount      Float
+   description String
+   savingTime  DateTime
+   createdAt   DateTime @default(now())
+   updatedAt   DateTime @default(now()) @updatedAt
+
+   @@map("savings_logs")
+}
+
+model SavingsUser {
    id        String   @id @default(cuid())
-   email     String   @unique
-   firstName String
-   lastName  String
-   password  String
+   userId    String
+   user      User     @relation(fields: [userId], references: [id])
+   savingsId String
+   savings   Savings  @relation(fields: [savingsId], references: [id])
    createdAt DateTime @default(now())
    updatedAt DateTime @default(now()) @updatedAt
 
-   @@map("users")
+   @@map("savings_users")
 }
