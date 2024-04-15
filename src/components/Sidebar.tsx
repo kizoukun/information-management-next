@@ -4,10 +4,7 @@ import { useGlobalContext } from "@/context/store";
 import Link from "next/link";
 import Icon from "./Icon";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 import { signOut } from "next-auth/react";
-import { GetUserSavings } from "@/server/savings";
-import { useEffect } from "react";
 
 function SidebarLink({
    icon,
@@ -19,13 +16,13 @@ function SidebarLink({
    children: React.ReactNode;
 }) {
    const pathName = usePathname();
-   const active =
-      pathName.includes(href) &&
-      (pathName == "/dashboard" || href !== "/dashboard");
+   const active = pathName === href;
    return (
       <Link
          href={href}
-         className={`rounded-r-3xl ${active ? "" : ""}  flex space-x-4`}
+         className={`rounded-r-3xl ${
+            active ? "underline" : "hover:underline"
+         }  flex space-x-4`}
       >
          <Icon icon={icon} className={`text-2xl`} />
          <p>{children}</p>

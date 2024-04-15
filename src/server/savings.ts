@@ -3,6 +3,7 @@ import { authOptions } from "@/lib/authOptions";
 import { db } from "@/lib/db";
 import {
    CreateSavingsFormValidation,
+   DeleteUserSavingsFormValidation,
    InviteUserSavingsFormValidation,
 } from "@/lib/validation/savings";
 import { getServerSession } from "next-auth";
@@ -125,20 +126,66 @@ export async function InviteUserSavings(form: unknown) {
    };
 }
 
-export async function GetUserSavings() {
+export async function DeleteUserSavings(form: unknown) {
+   const validate = DeleteUserSavingsFormValidation.safeParse(form);
+   if (!validate.success) {
+      let message = "";
+      for (const error of validate.error.errors) {
+         message += error.message + "\n";
+      }
+      return { success: false, message };
+   }
+
+   const data = validate.data;
+
    const user = await getServerSession(authOptions);
    if (!user) {
       return { success: false, message: "You need to be logged in" };
    }
 
-   const savings = await db.savingsUser.findMany({
+   const saving = await db.savings.findFirst({
       where: {
-         userId: user.user.id,
+         id: data.savingsId,
       },
       include: {
-         savings: true,
+         SavingsUser: {
+            include: {
+               user: true,
+            },
+         },
       },
    });
 
-   return { success: true, data: savings };
+   if (!saving) {
+      return { success: false, message: "Savings not found" };
+   }
+
+   if (saving.creatorId !== user.user.id) {
+      return {
+         success: false,
+         message: "You are not the creator of this savings",
+      };
+   }
+
+   const userToDelete = saving.SavingsUser.find(
+      (user) => user.userId === data.userId
+   );
+
+   if (!userToDelete) {
+      return { success: false, message: "User not found in savings" };
+   }
+
+   await db.savingsUser.delete({
+      where: {
+         id: userToDelete.id,
+      },
+   });
+
+   revalidatePath("/dashboard/savings/" + data.savingsId);
+   revalidatePath("/dashboard");
+
+   return {
+      success: true,
+      message: "User successfully deleted from the savings account",
+   };
 }

@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import InviteUserDialog from "./_components/InviteUserDialog";
+import ListUsersDialog from "./_components/ListUsersDialog";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +39,13 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       <main className="p-5">
          <div className="flex justify-between items-center">
             <p className="text-xl font-bold">Saving: {saving.savings.title}</p>
-            {isOwner && <InviteUserDialog />}
+            <div className="gap-4 flex items-center">
+               {isOwner && <InviteUserDialog savingsId={saving.savings.id} />}
+               <ListUsersDialog
+                  savingsId={saving.savings.id}
+                  isOwner={isOwner}
+               />
+            </div>
          </div>
       </main>
    );

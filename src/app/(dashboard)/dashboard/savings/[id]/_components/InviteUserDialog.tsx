@@ -15,7 +15,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { InviteUserSavings } from "@/server/savings";
 import { useState } from "react";
 
-export default function InviteUserDialog() {
+export default function InviteUserDialog(props: { savingsId: string }) {
    const [loading, setLoading] = useState(false);
    const [open, setOpen] = useState(false);
    const { toast } = useToast();
@@ -27,13 +27,14 @@ export default function InviteUserDialog() {
       try {
          const form = new FormData(evt.currentTarget);
          const data = {
-            title: form.get("title") as string,
+            email: form.get("email") as string,
+            savingsId: props.savingsId,
          };
          const response = await InviteUserSavings(data);
          if (response.success) {
             setOpen(false);
             toast({
-               title: "Savings created successfully",
+               title: "Users Invited successfully",
             });
          } else {
             toast({
@@ -56,17 +57,17 @@ export default function InviteUserDialog() {
          <DialogContent className="sm:max-w-[425px]">
             <form onSubmit={handleSubmit}>
                <DialogHeader>
-                  <DialogTitle>Create Saving</DialogTitle>
+                  <DialogTitle>Invite User</DialogTitle>
                   <DialogDescription>
-                     Create your own saving to start documenting your expenses
+                     Invite user to your savings account
                   </DialogDescription>
                </DialogHeader>
                <div className="grid gap-4 py-4">
                   <div className="grid grid-cols-4 items-center gap-4">
-                     <Label htmlFor="title" className="text-right">
-                        Title
+                     <Label htmlFor="email" className="text-right">
+                        Email
                      </Label>
-                     <Input id="title" name="title" className="col-span-3" />
+                     <Input id="email" name="email" className="col-span-3" />
                   </div>
                </div>
                <DialogFooter>

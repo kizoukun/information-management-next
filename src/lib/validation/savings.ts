@@ -12,3 +12,8 @@ export const InviteUserSavingsFormValidation = z.object({
       .email({ message: "Please input a valid email" }),
    savingsId: z.string({ required_error: "Please input the savings id" }),
 });
+
+export const DeleteUserSavingsFormValidation = z.object({
+   userId: z.string({ required_error: "Please input the user id" }),
+   savingsId: z.string({ required_error: "Please input the savings id" }),
+});
