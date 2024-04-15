@@ -37,9 +37,11 @@ export default async function DashboardPage() {
    );
 
    return (
-      <div className="bg-gray-100 min-h-screen">
-         <p>Dashboard Page</p>
-         <CreateSavingDialog />
-      </div>
+      <main className="p-5">
+         <div className="flex justify-between items-center">
+            <p className="font-bold text-xl uppercase">Dashboard</p>
+            <CreateSavingDialog />
+         </div>
+      </main>
    );
 }

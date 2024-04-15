@@ -95,7 +95,7 @@ export default function Sidebar({
                            <SidebarLink
                               key={saving.id}
                               icon="clarity:savings-solid"
-                              href={`/dashboard/saving/${saving.id}`}
+                              href={`/dashboard/savings/${saving.id}`}
                            >
                               {saving.title}
                            </SidebarLink>
@@ -117,7 +117,7 @@ export default function Sidebar({
                            <SidebarLink
                               key={saving.id}
                               icon="clarity:savings-solid"
-                              href={`/dashboard/saving/${saving.id}`}
+                              href={`/dashboard/savings/${saving.id}`}
                            >
                               {saving.title}
                            </SidebarLink>
