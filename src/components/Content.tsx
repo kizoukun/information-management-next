@@ -16,11 +16,11 @@ export default function Content({ children }: { children: React.ReactNode }) {
          <footer className="bottom-0 left-0 z-50 w-full bg-white px-2 py-2 shadow-xl sm:px-8">
             &copy;{" "}
             <a
-               href="https://yuelhost.com"
+               href="#"
                className="text-primary hover:underline"
                target="_blank"
             >
-               YuelHost
+               Information Management
             </a>
             , All Right Reserved. Copyright © 2021 - {new Date().getFullYear()}
          </footer>

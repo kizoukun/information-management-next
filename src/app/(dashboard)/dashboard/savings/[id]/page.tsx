@@ -47,6 +47,11 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                />
             </div>
          </div>
+
+         <div
+            id="chart"
+            className="min-h-[500px] bg-gray-300 mt-4 rounded-lg"
+         ></div>
       </main>
    );
 }

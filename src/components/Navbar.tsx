@@ -7,9 +7,6 @@ export default function Navbar() {
    return (
       <nav className="sticky top-0 z-50 flex w-full items-center justify-between bg-white px-4 py-2">
          <div className="flex items-center">
-            <Link href="/" className="mr-4 flex lg:hidden">
-               {/* <Image src={Logo} alt="YuelHost" className="h-12 w-12" /> */}
-            </Link>
             <ToggleSidebar />
          </div>
          <div className="flex items-center gap-5">

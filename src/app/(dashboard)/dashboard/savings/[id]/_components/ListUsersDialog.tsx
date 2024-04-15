@@ -43,16 +43,16 @@ export default async function ListUsersDialog(props: {
             <DialogHeader>
                <DialogTitle>List Users</DialogTitle>
                <DialogDescription>
-                  List of users in this savings group
+                  List of users in this savings
                </DialogDescription>
             </DialogHeader>
-            <div className="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4 py-4">
+            <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
                {savings?.SavingsUser.map((savingsUser) => (
                   <div
                      key={savingsUser.user.id}
                      className="p-3 border border-primary rounded-lg"
                   >
-                     <p className="text-center flex items-center">
+                     <p className="text-center flex items-center truncate">
                         <span className="mr-2">
                            <Icon icon={"gg:profile"} className="w-6 h-6" />{" "}
                         </span>
