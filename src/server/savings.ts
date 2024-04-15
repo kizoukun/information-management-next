@@ -124,3 +124,21 @@ export async function InviteUserSavings(form: unknown) {
       message: "User successfully invited to the savings account",
    };
 }
+
+export async function GetUserSavings() {
+   const user = await getServerSession(authOptions);
+   if (!user) {
+      return { success: false, message: "You need to be logged in" };
+   }
+
+   const savings = await db.savingsUser.findMany({
+      where: {
+         userId: user.user.id,
+      },
+      include: {
+         savings: true,
+      },
+   });
+
+   return { success: true, data: savings };
+}
