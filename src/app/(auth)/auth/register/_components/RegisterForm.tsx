@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Register } from "@/server/auth";
 import { useState } from "react";
 
@@ -100,13 +101,9 @@ export default function RegisterForm() {
                placeholder="Confirm Password"
             />
          </div>
-         <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-500 disabled:bg-blue-400 text-white font-bold p-2 rounded-lg"
-         >
+         <Button type="submit" disabled={loading} className="w-full">
             REGISTER
-         </button>
+         </Button>
       </form>
    );
 }

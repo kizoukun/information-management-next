@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -60,12 +61,9 @@ export default function LoginForm() {
             />
          </div>
          <div>
-            <button
-               type="submit"
-               className="w-full bg-blue-500 text-white rounded-lg p-2"
-            >
+            <Button type="submit" className="w-full">
                LOGIN
-            </button>
+            </Button>
          </div>
       </form>
    );
