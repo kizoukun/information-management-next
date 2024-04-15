@@ -29,7 +29,7 @@ npm run dev
 
 ## TODO
 
--  [x] Add Edit Savings name
+-  [ ] Add Edit Savings name
 -  [ ] Delete Savings also confirmation make sure there is no users first on the savings
 -  [ ] Edit User Profile
 -  [ ] Split the card on Activity Detail based on date
