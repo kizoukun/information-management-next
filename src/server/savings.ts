@@ -1,7 +1,9 @@
 "use server";
+import "server-only";
 import { authOptions } from "@/lib/authOptions";
 import { db } from "@/lib/db";
 import {
+   AddSavingsActivityFormValidation,
    CreateSavingsFormValidation,
    DeleteUserSavingsFormValidation,
    InviteUserSavingsFormValidation,
@@ -187,5 +189,66 @@ export async function DeleteUserSavings(form: unknown) {
    return {
       success: true,
       message: "User successfully deleted from the savings account",
+   };
+}
+
+export async function AddSavingsLog(form: unknown) {
+   const validation = AddSavingsActivityFormValidation.safeParse(form);
+   if (!validation.success) {
+      let message = "";
+      for (const error of validation.error.errors) {
+         message += error.message + "\n";
+      }
+      return { success: false, message };
+   }
+
+   const data = validation.data;
+   const user = await getServerSession(authOptions);
+   if (!user) {
+      return { success: false, message: "You need to be logged in" };
+   }
+
+   const saving = await db.savings.findFirst({
+      where: {
+         id: data.savingsId,
+      },
+      include: {
+         SavingsUser: {
+            include: {
+               user: true,
+            },
+         },
+      },
+   });
+
+   if (!saving) {
+      return { success: false, message: "Savings not found" };
+   }
+
+   const isUserInSavings = saving.SavingsUser.some(
+      (user) => user.userId === user.user.id
+   );
+
+   if (!isUserInSavings) {
+      return { success: false, message: "You are not in this savings" };
+   }
+
+   const activityType = data.type === "income" ? true : false;
+
+   const log = await db.savingsLog.create({
+      data: {
+         amount: data.amount,
+         description: data.description,
+         savingsId: data.savingsId,
+         type: activityType,
+         savingTime: data.date,
+         userId: user.user.id,
+      },
+   });
+
+   revalidatePath("/dashboard/savings/" + data.savingsId);
+   return {
+      success: true,
+      message: "Activity successfully logged",
    };
 }
