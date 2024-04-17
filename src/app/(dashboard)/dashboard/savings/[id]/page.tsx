@@ -69,6 +69,16 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       return acc - log.amount;
    }, 0);
 
+   function getAssetsPriceToday(logs: typeof savingsLog) {
+      if (!logs.length) return 0;
+      return logs.reduce((acc, log) => {
+         if (log.type) {
+            return acc + log.amount;
+         }
+         return acc - log.amount;
+      }, 0);
+   }
+
    const isOwner = saving.savings.creatorId === session.user.id;
 
    return (
@@ -100,7 +110,10 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
          <div className="lg:max-h-[720px] max-h-[540px] overflow-y-auto space-y-4">
             {Object.keys(logs).map((date) => (
                <div key={date}>
-                  <p className="font-bold my-2">{date}</p>
+                  <p className="font-bold my-2">
+                     {date} Rp
+                     {getAssetsPriceToday(logs[date]).toLocaleString("ID-id")}
+                  </p>
                   <div className="flex flex-row gap-5 overflow-x-auto ">
                      {logs[date].map((log) => (
                         <div
@@ -109,7 +122,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                         >
                            <p>
                               {log.type ? "+" : "-"}
-                              {log.amount}
+                              {log.amount.toLocaleString("ID-id")}
                            </p>
                            <p>{log.description}</p>
                            <p>{log.savingTime.toDateString()}</p>
