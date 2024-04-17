@@ -24,8 +24,8 @@ export const AddSavingsActivityFormValidation = z.object({
       .min(1, "Amount must be greater than 1"),
    description: z
       .string({ required_error: "Please input the description" })
-      .min(10, {
-         message: "Description must be at least 10 characters",
+      .min(3, {
+         message: "Description must be at least 3 characters",
       }),
    savingsId: z.string({ required_error: "Please input the savings id" }),
    type: z.enum(["income", "expense"], {
