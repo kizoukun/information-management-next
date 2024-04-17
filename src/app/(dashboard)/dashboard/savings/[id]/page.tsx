@@ -15,6 +15,10 @@ type SavingsDetailProps = {
    };
 };
 
+type accumulator = {
+   [key: string]: typeof savingsLog;
+};
+
 export default async function SavingsDetail(props: SavingsDetailProps) {
    const session = await getServerSession(authOptions);
    if (!session) {
@@ -47,9 +51,6 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       },
    });
 
-   type accumulator = {
-      [key: string]: typeof savingsLog;
-   };
    const logs = savingsLog.reduce((acc: accumulator, log) => {
       const wibTimezone = new Date(
          log.savingTime.setHours(log.savingTime.getHours() + 7)
