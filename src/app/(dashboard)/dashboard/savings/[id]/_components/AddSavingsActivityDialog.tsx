@@ -50,6 +50,7 @@ export default function AddSavingsActivityDialog(props: { savingsId: string }) {
             toast({
                title: "Activity added successfully",
             });
+            setDate(new Date(new Date()));
          } else {
             toast({
                title: "An error occurred",

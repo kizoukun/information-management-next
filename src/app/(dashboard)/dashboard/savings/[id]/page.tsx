@@ -51,7 +51,10 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       [key: string]: typeof savingsLog;
    };
    const logs = savingsLog.reduce((acc: accumulator, log) => {
-      const date = log.savingTime.toISOString().split("T")[0];
+      const wibTimezone = new Date(
+         log.savingTime.setHours(log.savingTime.getHours() + 7)
+      );
+      const date = wibTimezone.toISOString().split("T")[0];
       if (!acc[date]) {
          acc[date] = [];
       }
@@ -109,7 +112,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                               {log.amount}
                            </p>
                            <p>{log.description}</p>
-                           <p>{log.savingTime.toLocaleDateString()}</p>
+                           <p>{log.savingTime.toDateString()}</p>
                            <p>
                               {log.user.firstName} {log.user.lastName}
                            </p>
