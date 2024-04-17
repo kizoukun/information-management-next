@@ -33,3 +33,7 @@ export const AddSavingsActivityFormValidation = z.object({
    }),
    date: z.date({ required_error: "Please input the date" }),
 });
+
+export const DeleteSavingsFormValidation = z.object({
+   savingsId: z.string({ required_error: "Please input the savings id" }),
+});

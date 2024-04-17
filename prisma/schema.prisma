@@ -43,11 +43,11 @@ model Savings {
 model SavingsLog {
    id          String   @id @default(cuid())
    savingsId   String
-   savings     Savings  @relation(fields: [savingsId], references: [id])
+   savings     Savings  @relation(fields: [savingsId], references: [id], onDelete: Cascade)
    amount      Float
    description String
    userId      String
-   user        User     @relation(fields: [userId], references: [id])
+   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
    type        Boolean
    savingTime  DateTime
    createdAt   DateTime @default(now())
@@ -59,9 +59,9 @@ model SavingsLog {
 model SavingsUser {
    id        String   @id @default(cuid())
    userId    String
-   user      User     @relation(fields: [userId], references: [id])
+   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
    savingsId String
-   savings   Savings  @relation(fields: [savingsId], references: [id])
+   savings   Savings  @relation(fields: [savingsId], references: [id], onDelete: Cascade)
    createdAt DateTime @default(now())
    updatedAt DateTime @default(now()) @updatedAt
 

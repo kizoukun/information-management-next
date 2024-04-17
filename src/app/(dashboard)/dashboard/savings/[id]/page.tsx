@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import InviteUserDialog from "./_components/InviteUserDialog";
 import ListUsersDialog from "./_components/ListUsersDialog";
 import AddSavingsActivityDialog from "./_components/AddSavingsActivityDialog";
+import DeleteSavings from "./_components/DeleteSavings";
 
 export const dynamic = "force-dynamic";
 
@@ -53,6 +54,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
          <div className="flex justify-between items-center">
             <p className="text-xl font-bold">Saving: {saving.savings.title}</p>
             <div className="gap-4 flex items-center">
+               {isOwner && <DeleteSavings savingsId={saving.savings.id} />}
                {isOwner && <InviteUserDialog savingsId={saving.savings.id} />}
                <ListUsersDialog
                   savingsId={saving.savings.id}
