@@ -43,9 +43,28 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
          user: true,
       },
       orderBy: {
-         createdAt: "desc",
+         savingTime: "desc",
       },
    });
+
+   type accumulator = {
+      [key: string]: typeof savingsLog;
+   };
+   const logs = savingsLog.reduce((acc: accumulator, log) => {
+      const date = log.savingTime.toISOString().split("T")[0];
+      if (!acc[date]) {
+         acc[date] = [];
+      }
+      acc[date].push(log);
+      return acc;
+   }, {});
+
+   const accumulatedAssets = savingsLog.reduce((acc, log) => {
+      if (log.type) {
+         return acc + log.amount;
+      }
+      return acc - log.amount;
+   }, 0);
 
    const isOwner = saving.savings.creatorId === session.user.id;
 
@@ -62,7 +81,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                />
             </div>
          </div>
-
+         <p>Assets {accumulatedAssets.toLocaleString("ID-id")}</p>
          <div
             id="chart"
             className="min-h-[500px] bg-gray-300 my-4 rounded-lg"
@@ -76,24 +95,29 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
          </div>
 
          <div className="lg:max-h-[720px] max-h-[540px] overflow-y-auto space-y-4">
-            <div className="flex flex-row gap-5 overflow-x-auto ">
-               {savingsLog.map((log) => (
-                  <div
-                     key={log.id}
-                     className="border border-primary shadow-lg p-2 rounded-lg min-w-[250px]"
-                  >
-                     <p>
-                        {log.type ? "+" : "-"}
-                        {log.amount}
-                     </p>
-                     <p>{log.description}</p>
-                     <p>{log.savingTime.toLocaleDateString()}</p>
-                     <p>
-                        {log.user.firstName} {log.user.lastName}
-                     </p>
+            {Object.keys(logs).map((date) => (
+               <div key={date}>
+                  <p className="font-bold my-2">{date}</p>
+                  <div className="flex flex-row gap-5 overflow-x-auto ">
+                     {logs[date].map((log) => (
+                        <div
+                           key={log.id}
+                           className="border border-primary shadow-lg p-2 rounded-lg min-w-[250px]"
+                        >
+                           <p>
+                              {log.type ? "+" : "-"}
+                              {log.amount}
+                           </p>
+                           <p>{log.description}</p>
+                           <p>{log.savingTime.toLocaleDateString()}</p>
+                           <p>
+                              {log.user.firstName} {log.user.lastName}
+                           </p>
+                        </div>
+                     ))}
                   </div>
-               ))}
-            </div>
+               </div>
+            ))}
          </div>
       </main>
    );
