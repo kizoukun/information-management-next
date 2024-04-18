@@ -4,7 +4,7 @@ import {
    CreateSavingsFormValidation,
    DeleteSavingsFormValidation,
    DeleteUserSavingsFormValidation,
-   EditSavingsActivityFormValidation,
+   EditSavingsFormValidation,
    InviteUserSavingsFormValidation,
 } from "@/lib/validation/savings";
 import { db } from "@/lib/db";
@@ -253,5 +253,60 @@ export async function DeleteSavingsAction(form: unknown) {
    return {
       success: true,
       message: "Savings successfully deleted",
+   };
+}
+
+export async function EditSavingsAction(form: unknown) {
+   const validate = EditSavingsFormValidation.safeParse(form);
+   if (!validate.success) {
+      let message = "";
+      for (const error of validate.error.errors) {
+         message += error.message + "\n";
+      }
+      return { success: false, message };
+   }
+
+   const data = validate.data;
+
+   const user = await getServerSession(authOptions);
+   if (!user) {
+      return { success: false, message: "You need to be logged in" };
+   }
+
+   const saving = await db.savings.findFirst({
+      where: {
+         id: data.savingsId,
+      },
+      include: {
+         SavingsUser: true,
+      },
+   });
+
+   if (!saving) {
+      return { success: false, message: "Log not found" };
+   }
+
+   const isOwner = saving.creatorId === user.user.id;
+
+   if (!isOwner) {
+      return {
+         success: false,
+         message: "You are not the owner of this savings",
+      };
+   }
+
+   await db.savings.update({
+      where: {
+         id: data.savingsId,
+      },
+      data: {
+         title: data.title,
+      },
+   });
+
+   revalidatePath("/dashboard/savings/" + data.savingsId);
+   return {
+      success: true,
+      message: "Savings successfully edited",
    };
 }

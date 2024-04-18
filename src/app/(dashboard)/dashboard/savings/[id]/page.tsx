@@ -8,6 +8,7 @@ import AddSavingsActivityDialog from "./_components/AddSavingsActivityDialog";
 import DeleteSavings from "./_components/DeleteSavings";
 import DeleteSavingsActivityDialog from "./_components/DeleteSavingsActivityDialog";
 import EditSavingsActivityDialog from "./_components/EditSavingsActivityDialog";
+import EditSavingDialog from "./_components/EditSavingDialog";
 
 export const dynamic = "force-dynamic";
 
@@ -88,7 +89,17 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
    return (
       <main className="p-5">
          <div className="flex justify-between items-center">
-            <p className="text-xl font-bold">Saving: {saving.savings.title}</p>
+            <p className="text-xl font-bold flex items-center gap-2">
+               Saving: {saving.savings.title}{" "}
+               {isOwner && (
+                  <span className="cursor-pointer">
+                     <EditSavingDialog
+                        title={saving.savings.title}
+                        savingsId={saving.savings.id}
+                     />
+                  </span>
+               )}
+            </p>
             <div className="gap-4 flex items-center">
                {isOwner && <DeleteSavings savingsId={saving.savings.id} />}
                {isOwner && <InviteUserDialog savingsId={saving.savings.id} />}

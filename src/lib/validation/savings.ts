@@ -39,7 +39,9 @@ export const DeleteSavingsFormValidation = z.object({
 });
 
 export const DeleteSavingsActivityFormValidation = z.object({
-   savingsLogId: z.string({ required_error: "Please input the savings log id" }),
+   savingsLogId: z.string({
+      required_error: "Please input the savings log id",
+   }),
 });
 
 export const EditSavingsActivityFormValidation = z.object({
@@ -51,9 +53,18 @@ export const EditSavingsActivityFormValidation = z.object({
       .min(3, {
          message: "Description must be at least 3 characters",
       }),
-   savingsLogId: z.string({ required_error: "Please input the savings log id" }),
+   savingsLogId: z.string({
+      required_error: "Please input the savings log id",
+   }),
    type: z.enum(["income", "expense"], {
       required_error: "Please select the type",
    }),
    date: z.date({ required_error: "Please input the date" }),
+});
+
+export const EditSavingsFormValidation = z.object({
+   title: z
+      .string({ required_error: "Please input the title " })
+      .min(3, "Title must be at least 3 characters"),
+   savingsId: z.string({ required_error: "Please input the savings id" }),
 });
