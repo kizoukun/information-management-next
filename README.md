@@ -31,7 +31,7 @@ npm run dev
 
 -  [x] Add Edit Savings name
 -  [x] Delete Savings also confirmation make sure there is no users first on the savings
--  [ ] Edit User Profile
+-  [x] Edit User Profile
 -  [x] Split the card on Activity Detail based on date
 -  [ ] Make all the chart
 -  [x] Remove and edit Activity
