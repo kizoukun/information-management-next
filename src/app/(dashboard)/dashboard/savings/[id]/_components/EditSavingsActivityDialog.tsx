@@ -22,7 +22,7 @@ import {
    SelectTrigger,
    SelectValue,
 } from "@/components/ui/select";
-import { EditSavingsActivityAction } from "@/server/savings";
+import { EditSavingsActivityAction } from "@/server/savings/activity";
 
 type AddSavingsActivityProps = {
    savingsLogId: string;
@@ -32,7 +32,9 @@ type AddSavingsActivityProps = {
    date?: Date;
 };
 
-export default function EditSavingsActivityDialog(props: AddSavingsActivityProps) {
+export default function EditSavingsActivityDialog(
+   props: AddSavingsActivityProps
+) {
    const [loading, setLoading] = useState(false);
    const [open, setOpen] = useState(false);
    const [date, setDate] = useState<Date>(props.date || new Date());
@@ -112,7 +114,10 @@ export default function EditSavingsActivityDialog(props: AddSavingsActivityProps
                      <Label htmlFor="type" className="text-right">
                         Type
                      </Label>
-                     <Select defaultValue={props.type ? "income" : "expense"} name="type">
+                     <Select
+                        defaultValue={props.type ? "income" : "expense"}
+                        name="type"
+                     >
                         <SelectTrigger className="col-span-3">
                            <SelectValue placeholder="Select Type" />
                         </SelectTrigger>
@@ -130,7 +135,9 @@ export default function EditSavingsActivityDialog(props: AddSavingsActivityProps
                   </div>
                </div>
                <DialogFooter>
-                  <Button type="submit" disabled={loading}>Save changes</Button>
+                  <Button type="submit" disabled={loading}>
+                     Save changes
+                  </Button>
                </DialogFooter>
             </form>
          </DialogContent>

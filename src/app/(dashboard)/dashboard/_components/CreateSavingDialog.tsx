@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { CreateSavings } from "@/server/savings";
+import { CreateSavings } from "@/server/savings/savings";
 import { useState } from "react";
 
 export default function CreateSavingDialog() {
@@ -23,7 +23,6 @@ export default function CreateSavingDialog() {
    async function handleSubmit(evt: React.FormEvent<HTMLFormElement>) {
       evt.preventDefault();
       // Implement form submission here
-      console.log("ads");
       setLoading(true);
       try {
          const form = new FormData(evt.currentTarget);

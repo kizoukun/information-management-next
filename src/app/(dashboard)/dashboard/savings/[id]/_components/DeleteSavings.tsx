@@ -10,7 +10,7 @@ import {
    DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { DeleteSavingsAction } from "@/server/savings";
+import { DeleteSavingsAction } from "@/server/savings/savings";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

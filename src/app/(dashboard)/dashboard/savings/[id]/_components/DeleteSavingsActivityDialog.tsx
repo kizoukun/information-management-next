@@ -10,7 +10,7 @@ import {
    DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { DeleteSavingsActivityAction } from "@/server/savings";
+import { DeleteSavingsActivityAction } from "@/server/savings/activity";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -18,7 +18,9 @@ type DeleteSavingsActivityProps = {
    savingsLogId: string;
 };
 
-export default function DeleteSavingsActivityDialog(props: DeleteSavingsActivityProps) {
+export default function DeleteSavingsActivityDialog(
+   props: DeleteSavingsActivityProps
+) {
    const router = useRouter();
    const [loading, setLoading] = useState(false);
    const { toast } = useToast();

@@ -22,7 +22,7 @@ import {
    SelectTrigger,
    SelectValue,
 } from "@/components/ui/select";
-import { AddSavingsLog } from "@/server/savings";
+import { AddSavingsLog } from "@/server/savings/activity";
 
 export default function AddSavingsActivityDialog(props: { savingsId: string }) {
    const [loading, setLoading] = useState(false);

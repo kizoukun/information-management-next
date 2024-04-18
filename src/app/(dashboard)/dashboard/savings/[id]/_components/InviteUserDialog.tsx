@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { InviteUserSavings } from "@/server/savings";
+import { InviteUserSavings } from "@/server/savings/savings";
 import { useState } from "react";
 
 export default function InviteUserDialog(props: { savingsId: string }) {

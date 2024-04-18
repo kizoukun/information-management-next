@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { DeleteUserSavings } from "@/server/savings";
+import { DeleteUserSavings } from "@/server/savings/savings";
 import { useState } from "react";
 
 export default function DeleteUserButton(props: {
