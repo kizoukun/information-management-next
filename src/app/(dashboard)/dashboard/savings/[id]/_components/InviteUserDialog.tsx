@@ -71,7 +71,9 @@ export default function InviteUserDialog(props: { savingsId: string }) {
                   </div>
                </div>
                <DialogFooter>
-                  <Button type="submit">Save changes</Button>
+                  <Button type="submit" disabled={loading}>
+                     Save changes
+                  </Button>
                </DialogFooter>
             </form>
          </DialogContent>
