@@ -6,6 +6,8 @@ import InviteUserDialog from "./_components/InviteUserDialog";
 import ListUsersDialog from "./_components/ListUsersDialog";
 import AddSavingsActivityDialog from "./_components/AddSavingsActivityDialog";
 import DeleteSavings from "./_components/DeleteSavings";
+import DeleteSavingsActivityDialog from "./_components/DeleteSavingsActivityDialog";
+import EditSavingsActivityDialog from "./_components/EditSavingsActivityDialog";
 
 export const dynamic = "force-dynamic";
 
@@ -51,9 +53,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       [key: string]: typeof savingsLog;
    };
    const logs = savingsLog.reduce((acc: accumulator, log) => {
-      const wibTimezone = new Date(
-         log.savingTime.setHours(log.savingTime.getHours() + 7)
-      );
+      const wibTimezone = setTimezoneToWib(log.savingTime);
       const date = wibTimezone.toISOString().split("T")[0];
       if (!acc[date]) {
          acc[date] = [];
@@ -61,6 +61,10 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       acc[date].push(log);
       return acc;
    }, {});
+
+   function setTimezoneToWib(date: Date) {
+      return new Date(date.setHours(7));
+   }
 
    const accumulatedAssets = savingsLog.reduce((acc, log) => {
       if (log.type) {
@@ -129,6 +133,20 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                            <p>
                               {log.user.firstName} {log.user.lastName}
                            </p>
+                           <div>
+                              <DeleteSavingsActivityDialog
+                                 savingsLogId={log.id}
+                              />
+                           </div>
+                           <div>
+                              <EditSavingsActivityDialog
+                                 savingsLogId={log.id}
+                                 amount={log.amount}
+                                 description={log.description}
+                                 type={log.type}
+                                 date={setTimezoneToWib(log.savingTime)}
+                              />
+                           </div>
                         </div>
                      ))}
                   </div>

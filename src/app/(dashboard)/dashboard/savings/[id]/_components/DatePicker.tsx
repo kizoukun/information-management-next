@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 
+
+
 export default function DatePicker({
    date,
    setDate,
@@ -21,8 +23,9 @@ export default function DatePicker({
    setDate: (date: Date) => void;
 }) {
    const [open, setOpen] = useState(false);
+
    return (
-      <Popover open={open} onOpenChange={(t) => setOpen(t)}>
+      <Popover open={open} onOpenChange={(bool) => setOpen(bool)}>
          <PopoverTrigger asChild>
             <Button
                variant={"outline"}
@@ -44,7 +47,6 @@ export default function DatePicker({
                   setDate(date || new Date());
                   setOpen(false);
                }}
-               initialFocus
             />
          </PopoverContent>
       </Popover>
