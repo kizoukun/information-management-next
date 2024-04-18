@@ -1,3 +1,5 @@
+"use server";
+import "server-only";
 import { authOptions } from "@/lib/authOptions";
 import { db } from "@/lib/db";
 import {
