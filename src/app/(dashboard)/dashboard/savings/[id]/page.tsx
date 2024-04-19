@@ -20,6 +20,22 @@ type SavingsDetailProps = {
    };
 };
 
+function getTodayDate() {
+   const currDate = new Date();
+   const month = currDate.getMonth() + 1;
+   const year = currDate.getFullYear();
+   const maxDate = new Date(year, month, 0).getDate();
+   const currDay = currDate.getDate();
+   return {
+      month: month,
+      year: year,
+      maxDate: maxDate,
+      currDay: currDay,
+      monthWithAdd: month < 10 ? `0${month}` : month,
+      currDayWithAdd: currDay < 10 ? `0${currDay}` : currDay,
+   };
+}
+
 export default async function SavingsDetail(props: SavingsDetailProps) {
    const session = await getServerSession(authOptions);
    if (!session) {
@@ -124,11 +140,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       Prediction?: number;
    };
 
-   const currDate = new Date();
-   const month = currDate.getMonth();
-   const year = currDate.getFullYear();
-   const maxDate = new Date(year, month + 1, 0).getDate();
-   const currDay = currDate.getDate();
+   const currDate = getTodayDate();
    const chartData: ChartDataType[] = [];
 
    type DailyData = [number, number];
@@ -137,10 +149,8 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
 
    let totalAssetsWithPrediction = 0;
 
-   for (let i: number = 1; i <= maxDate; i++) {
-      const dayAdd = i < 10 ? `0${i}` : i;
-      const monthAdd = month + 1 < 10 ? `0${month + 1}` : month + 1;
-      const date = `${year}-${monthAdd}-${dayAdd}`;
+   for (let i: number = 1; i <= currDate.maxDate; i++) {
+      const date = `${currDate.year}-${currDate.monthWithAdd}-${currDate.currDayWithAdd}`;
       const log = logs[date];
       const amount = log ? getAssetsPriceToday(log) : 0;
 
@@ -148,7 +158,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
          date: date,
       };
 
-      if (currDay >= i) {
+      if (currDate.currDay >= i) {
          data["Your Saving"] = amount;
          dailyData.push([i, amount]);
          totalAssetsWithPrediction += amount;
