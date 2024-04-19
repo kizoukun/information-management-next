@@ -36,6 +36,10 @@ function getTodayDate() {
    };
 }
 
+function setTimezoneToWib(date: Date) {
+   return new Date(date.setHours(7));
+}
+
 export default async function SavingsDetail(props: SavingsDetailProps) {
    const session = await getServerSession(authOptions);
    if (!session) {
@@ -80,10 +84,6 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       acc[date].push(log);
       return acc;
    }, {});
-
-   function setTimezoneToWib(date: Date) {
-      return new Date(date.setHours(7));
-   }
 
    const accumulatedAssets = savingsLog.reduce((acc, log) => {
       if (log.type) {
