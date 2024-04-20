@@ -108,13 +108,11 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       const todayPrice = getAssetsPriceToday(log);
       const before = new Date(date);
 
-      let yesterday: typeof savingsLog | undefined;
-
       function getYesterday(currentDate: Date) {
          const newDate = new Date(currentDate);
          newDate.setDate(newDate.getDate() - 1);
          const newDateSr = newDate.toISOString().split("T")[0];
-         const logsYesterday = (yesterday = logs[newDateSr]);
+         const logsYesterday = logs[newDateSr];
          if (!logsYesterday) {
             if (newDate.getDate() <= 1) return [];
             return getYesterday(newDate);
@@ -122,7 +120,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
          return logsYesterday;
       }
 
-      yesterday = getYesterday(before);
+      const yesterday = getYesterday(before);
 
       const yesterdayPrice = getAssetsPriceToday(yesterday);
       const result = todayPrice - yesterdayPrice;
