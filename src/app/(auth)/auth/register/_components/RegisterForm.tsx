@@ -3,8 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Register } from "@/server/auth";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
+   const router = useRouter();
+
    const [loading, setLoading] = useState(false);
    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
       setLoading(true);
@@ -32,7 +35,7 @@ export default function RegisterForm() {
             return;
          }
 
-         alert(response.message);
+         router.push("/dashboard");
       } catch (err) {
          setLoading(false);
          alert("Terjadi kesalahan");
