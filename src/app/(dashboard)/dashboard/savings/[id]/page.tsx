@@ -67,6 +67,35 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       },
    });
 
+   const currDate = getTodayDate();
+
+   const lastMonthIncrease = await db.savingsLog.groupBy({
+      by: ["savingsId"],
+      where: {
+         savingsId: props.params.id,
+         savingTime: {
+            lte: new Date(currDate.year, currDate.month - 1, 1),
+            gte: new Date(currDate.year, currDate.month - 2, 1),
+         },
+      },
+      _sum: {
+         amount: true,
+      },
+   });
+
+   const lastMonthAllAssets = await db.savingsLog.groupBy({
+      by: ["savingsId"],
+      where: {
+         savingsId: props.params.id,
+         savingTime: {
+            lte: new Date(currDate.year, currDate.month - 1, 1),
+         },
+      },
+      _sum: {
+         amount: true,
+      },
+   });
+
    if (!saving) {
       return redirect("/dashboard");
    }
@@ -139,14 +168,14 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       Prediction?: number;
    };
 
-   const currDate = getTodayDate();
    const chartData: ChartDataType[] = [];
 
    type DailyData = [number, number];
 
    const dailyData: DailyData[] = [];
 
-   let totalAssetsWithPrediction = 0;
+   let totalAssetsWithPrediction = lastMonthAllAssets[0]._sum.amount ?? 0;
+   let totalIncreaseThisMonth = 0;
 
    for (let i: number = 1; i <= currDate.maxDate; i++) {
       const date = `${currDate.year}-${currDate.monthWithAdd}-${
@@ -161,6 +190,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
 
       if (currDate.currDay >= i) {
          totalAssetsWithPrediction += amount;
+         totalIncreaseThisMonth += amount;
          if (currDate.currDay == i) {
             data["Prediction"] = totalAssetsWithPrediction;
          }
@@ -176,6 +206,10 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
 
       chartData.push(data);
    }
+
+   const percentageLastMonthIncrease = Math.round(
+      (totalIncreaseThisMonth / (lastMonthIncrease[0]._sum.amount ?? 1)) * 100
+   );
 
    return (
       <main className="p-5">
@@ -200,7 +234,10 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                />
             </div>
          </div>
-         <p>Assets {accumulatedAssets.toLocaleString("ID-id")}</p>
+         <p>
+            Assets {accumulatedAssets.toLocaleString("ID-id")}{" "}
+            {percentageLastMonthIncrease}% Increase from last month
+         </p>
          <div
             id="chart"
             className="min-h-[500px] my-4 rounded-lg bg-gray-100 p-5"
