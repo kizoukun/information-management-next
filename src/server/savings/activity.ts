@@ -83,8 +83,8 @@ export async function DeleteSavingsActivityAction(form: unknown) {
 
    const data = validate.data;
 
-   const user = await getServerSession(authOptions);
-   if (!user) {
+   const authUser = await getServerSession(authOptions);
+   if (!authUser) {
       return { success: false, message: "You need to be logged in" };
    }
 
@@ -93,7 +93,11 @@ export async function DeleteSavingsActivityAction(form: unknown) {
          id: data.savingsLogId,
       },
       include: {
-         savings: true,
+         savings: {
+            include: {
+               SavingsUser: true,
+            },
+         },
       },
    });
 
@@ -101,25 +105,12 @@ export async function DeleteSavingsActivityAction(form: unknown) {
       return { success: false, message: "Log not found" };
    }
 
-   const saving = await db.savings.findFirst({
-      where: {
-         id: log.savingsId,
-      },
-      include: {
-         SavingsUser: {
-            include: {
-               user: true,
-            },
-         },
-      },
-   });
-
-   if (!saving) {
+   if (!log.savings) {
       return { success: false, message: "Savings not found" };
    }
 
-   const isInUserGroup = saving.SavingsUser.some(
-      (user) => user.userId === user.user.id
+   const isInUserGroup = log.savings.SavingsUser.some(
+      (user) => user.userId === authUser.user.id
    );
 
    if (!isInUserGroup) {
@@ -151,8 +142,8 @@ export async function EditSavingsActivityAction(form: unknown) {
 
    const data = validate.data;
 
-   const user = await getServerSession(authOptions);
-   if (!user) {
+   const authUser = await getServerSession(authOptions);
+   if (!authUser) {
       return { success: false, message: "You need to be logged in" };
    }
 
@@ -161,7 +152,11 @@ export async function EditSavingsActivityAction(form: unknown) {
          id: data.savingsLogId,
       },
       include: {
-         savings: true,
+         savings: {
+            include: {
+               SavingsUser: true,
+            },
+         },
       },
    });
 
@@ -169,25 +164,12 @@ export async function EditSavingsActivityAction(form: unknown) {
       return { success: false, message: "Log not found" };
    }
 
-   const saving = await db.savings.findFirst({
-      where: {
-         id: log.savingsId,
-      },
-      include: {
-         SavingsUser: {
-            include: {
-               user: true,
-            },
-         },
-      },
-   });
-
-   if (!saving) {
+   if (!log.savings) {
       return { success: false, message: "Savings not found" };
    }
 
-   const isInUserGroup = saving.SavingsUser.some(
-      (user) => user.userId === user.user.id
+   const isInUserGroup = log.savings.SavingsUser.some(
+      (user) => user.userId === authUser.user.id
    );
 
    if (!isInUserGroup) {

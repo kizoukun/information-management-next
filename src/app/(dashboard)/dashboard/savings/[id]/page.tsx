@@ -52,7 +52,18 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
          savingsId: props.params.id,
       },
       include: {
-         savings: true,
+         savings: {
+            include: {
+               SavingsLog: {
+                  include: {
+                     user: true,
+                  },
+                  orderBy: {
+                     savingTime: "desc",
+                  },
+               },
+            },
+         },
       },
    });
 
@@ -60,17 +71,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       return redirect("/dashboard");
    }
 
-   const savingsLog = await db.savingsLog.findMany({
-      where: {
-         savingsId: props.params.id,
-      },
-      include: {
-         user: true,
-      },
-      orderBy: {
-         savingTime: "desc",
-      },
-   });
+   const savingsLog = saving.savings.SavingsLog;
 
    type accumulator = {
       [key: string]: typeof savingsLog;
@@ -148,7 +149,9 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
    let totalAssetsWithPrediction = 0;
 
    for (let i: number = 1; i <= currDate.maxDate; i++) {
-      const date = `${currDate.year}-${currDate.monthWithAdd}-${currDate.currDayWithAdd}`;
+      const date = `${currDate.year}-${currDate.monthWithAdd}-${
+         i < 10 ? `0${i}` : i
+      }`;
       const log = logs[date];
       const amount = log ? getAssetsPriceToday(log) : 0;
 
@@ -157,13 +160,18 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       };
 
       if (currDate.currDay >= i) {
-         data["Your Saving"] = amount;
-         dailyData.push([i, amount]);
          totalAssetsWithPrediction += amount;
+         if (currDate.currDay == i) {
+            data["Prediction"] = totalAssetsWithPrediction;
+         }
+         data["Your Saving"] = totalAssetsWithPrediction;
+         dailyData.push([i, totalAssetsWithPrediction]);
       } else {
-         const result = regression.polynomial(dailyData);
-         totalAssetsWithPrediction += result.predict(i)[1] ?? 0;
-         data["Prediction"] = result.predict(i)[1];
+         const result = regression.polynomial(dailyData, { precision: 2 });
+         if (i >= currDate.maxDate) {
+            totalAssetsWithPrediction = result.predict(i)[1];
+         }
+         data["Prediction"] = result.predict(i)[1] ?? 0;
       }
 
       chartData.push(data);

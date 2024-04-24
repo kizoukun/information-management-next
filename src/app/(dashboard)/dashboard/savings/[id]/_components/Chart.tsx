@@ -18,8 +18,8 @@ export default function LineChartHero({ chartData }: LineChartHeroProps) {
          className="h-80"
          data={chartData}
          index="date"
-         categories={["Your Saving", "Prediction"]}
-         colors={["indigo", "rose"]}
+         categories={["Prediction", "Your Saving"]}
+         colors={["rose", "indigo"]}
          valueFormatter={dataFormatter}
       />
    );
