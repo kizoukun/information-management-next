@@ -174,7 +174,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
 
    const dailyData: DailyData[] = [];
 
-   let totalAssetsWithPrediction = lastMonthAllAssets[0]._sum.amount ?? 0;
+   let totalAssetsWithPrediction = lastMonthAllAssets[0]?._sum.amount ?? 0;
    let totalIncreaseThisMonth = 0;
 
    for (let i: number = 1; i <= currDate.maxDate; i++) {
@@ -208,7 +208,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
    }
 
    const percentageLastMonthIncrease = Math.round(
-      (totalIncreaseThisMonth / (lastMonthIncrease[0]._sum.amount ?? 1)) * 100
+      (totalIncreaseThisMonth / (lastMonthIncrease[0]?._sum.amount ?? 1)) * 100
    );
 
    return (
