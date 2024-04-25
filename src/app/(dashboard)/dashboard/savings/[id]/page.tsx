@@ -11,6 +11,8 @@ import DeleteSavingsActivityDialog from "./_components/DeleteSavingsActivityDial
 import EditSavingsActivityDialog from "./_components/EditSavingsActivityDialog";
 import EditSavingDialog from "./_components/EditSavingDialog";
 import LineChartHero from "./_components/Chart";
+import CustomCard from "./_components/CustomCard";
+import HeaderCard from "./_components/HeaderCard";
 
 export const dynamic = "force-dynamic";
 
@@ -178,9 +180,8 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
    let totalIncreaseThisMonth = 0;
 
    for (let i: number = 1; i <= currDate.maxDate; i++) {
-      const date = `${currDate.year}-${currDate.monthWithAdd}-${
-         i < 10 ? `0${i}` : i
-      }`;
+      const date = `${currDate.year}-${currDate.monthWithAdd}-${i < 10 ? `0${i}` : i
+         }`;
       const log = logs[date];
       const amount = log ? getAssetsPriceToday(log) : 0;
 
@@ -212,8 +213,8 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
    );
 
    return (
-      <main className="p-5">
-         <div className="flex justify-between items-center">
+      <main className="p-5 bg-slate-200">
+         <div className="flex justify-between items-center ">
             <p className="text-xl font-bold flex items-center gap-2">
                Saving: {saving.savings.title}{" "}
                {isOwner && (
@@ -238,9 +239,29 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
             Assets {accumulatedAssets.toLocaleString("ID-id")}{" "}
             {percentageLastMonthIncrease}% Increase from last month
          </p>
+         <div className="mt-8 w-full grid md:grid-cols-4 gap-6">
+            <HeaderCard
+               title="Total Assets"
+               value="Rp 561526"
+               desc="Increase from last month"
+               percentage="56">
+            </HeaderCard>
+            <HeaderCard
+               title="Total Prediction"
+               value="Rp 348.983"
+               desc=""
+               percentage="56">
+            </HeaderCard>
+            <HeaderCard
+               title="Users"
+               value="5"
+               desc=""
+               percentage="56">
+            </HeaderCard>
+         </div>
          <div
             id="chart"
-            className="min-h-[500px] my-4 rounded-lg bg-gray-100 p-5"
+            className="min-h-[500px] my-4 rounded-lg bg-slate-50 p-5 shadow-lg"
          >
             <LineChartHero chartData={chartData} />
             <p>
@@ -249,7 +270,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
             </p>
          </div>
 
-         <div className="flex justify-between items-center my-4">
+         <div className="flex justify-between items-center my-4 ">
             <p className="text-xl font-bold">Activity</p>
             <div>
                <AddSavingsActivityDialog savingsId={saving.savings.id} />
@@ -259,7 +280,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
          <div className="lg:max-h-[720px] max-h-[540px] overflow-y-auto space-y-4">
             {Object.keys(logs).map((date) => (
                <div key={date}>
-                  <div className="font-bold my-2">
+                  <div className="font-bold mt-5 space-y-2 ">
                      <p>
                         {date} Rp
                         {getAssetsPriceToday(logs[date]).toLocaleString(
@@ -275,36 +296,14 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                         </p>
                      )}
                   </div>
-                  <div className="flex flex-row gap-5 overflow-x-auto ">
+                  <div className="flex flex-row gap-5 overflow-x-auto bg-slate-200 h-auto pt-4 pb-8 px-2 element">
                      {logs[date].map((log) => (
-                        <div
-                           key={log.id}
-                           className="border border-primary shadow-lg p-2 rounded-lg min-w-[250px]"
-                        >
-                           <p>
-                              {log.type ? "+" : "-"}
-                              {log.amount.toLocaleString("ID-id")}
-                           </p>
-                           <p>{log.description}</p>
-                           <p>{log.savingTime.toDateString()}</p>
-                           <p>
-                              {log.user.firstName} {log.user.lastName}
-                           </p>
-                           <div>
-                              <DeleteSavingsActivityDialog
-                                 savingsLogId={log.id}
-                              />
-                           </div>
-                           <div>
-                              <EditSavingsActivityDialog
-                                 savingsLogId={log.id}
-                                 amount={log.amount}
-                                 description={log.description}
-                                 type={log.type}
-                                 date={setTimezoneToWib(log.savingTime)}
-                              />
-                           </div>
-                        </div>
+                        <CustomCard
+                           title="Wardana wardana wardana warnda"
+                           value="2000"
+                           desc="loremkfdskfd skdfjkdsjf"
+                           date="wend 14 feb"
+                        />
                      ))}
                   </div>
                </div>

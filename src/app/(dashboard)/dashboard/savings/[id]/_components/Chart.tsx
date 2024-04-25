@@ -15,7 +15,7 @@ type LineChartHeroProps = {
 export default function LineChartHero({ chartData }: LineChartHeroProps) {
    return (
       <LineChart
-         className="h-80"
+         className="h-96"
          data={chartData}
          index="date"
          categories={["Prediction", "Your Saving"]}
