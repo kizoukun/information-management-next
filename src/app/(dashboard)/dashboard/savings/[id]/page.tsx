@@ -277,7 +277,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
             </div>
          </div>
 
-         <div className="lg:max-h-[720px] max-h-[540px] overflow-y-auto space-y-4">
+         <div className="lg:max-h-[720px]  max-h-[540px] overflow-y-auto space-y-4 ">
             {Object.keys(logs).map((date) => (
                <div key={date}>
                   <div className="font-bold mt-5 space-y-2 ">
