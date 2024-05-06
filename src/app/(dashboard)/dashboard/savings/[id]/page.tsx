@@ -218,7 +218,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
    );
 
    const percentageLastMonthWithPrediction = Math.round(
-      (totalAssetsWithPrediction / (lastMonthIncrease[0]?._sum.amount ?? 1)) *
+      ((totalAssetsWithPrediction - accumulatedAssets) / accumulatedAssets) *
          100
    );
 
@@ -257,7 +257,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                value={`Rp${Math.round(totalAssetsWithPrediction).toLocaleString(
                   "ID-id"
                )}`}
-               desc=""
+               desc="Increase prediction based on current assets"
                percentage={percentageLastMonthWithPrediction}
             ></HeaderCard>
             <HeaderCard
