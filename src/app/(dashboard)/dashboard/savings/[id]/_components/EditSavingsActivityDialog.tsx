@@ -23,6 +23,7 @@ import {
    SelectValue,
 } from "@/components/ui/select";
 import { EditSavingsActivityAction } from "@/server/savings/activity";
+import DeleteSavingsActivityDialog from "./DeleteSavingsActivityDialog";
 
 type AddSavingsActivityProps = {
    savingsLogId: string;
@@ -76,7 +77,29 @@ export default function EditSavingsActivityDialog(
    return (
       <Dialog open={open} onOpenChange={(d) => setOpen(!open)}>
          <DialogTrigger asChild>
-            <Button onClick={() => setOpen(!open)}>Edit Saving Activity</Button>
+            <button
+               className="absolute  top-1 right-1 text-sm font-semibold p-1 rounded-xl brightness-95 hover:brightness-100"
+               onClick={() => setOpen(!open)}
+            >
+               <svg
+                  className="mx-auto"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24px"
+                  viewBox="0 0 24 24"
+               >
+                  <rect width="24" height="24" fill="none" />
+                  <g
+                     fill="none"
+                     stroke="#000"
+                     strokeLinecap="round"
+                     strokeLinejoin="round"
+                     strokeWidth="2"
+                  >
+                     <path d="M7 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1" />
+                     <path d="M20.385 6.585a2.1 2.1 0 0 0-2.97-2.97L9 12v3h3zM16 5l3 3" />
+                  </g>
+               </svg>
+            </button>
          </DialogTrigger>
          <DialogContent className="sm:max-w-[425px]">
             <form onSubmit={handleSubmit}>
@@ -140,6 +163,7 @@ export default function EditSavingsActivityDialog(
                   </Button>
                </DialogFooter>
             </form>
+            <DeleteSavingsActivityDialog savingsLogId={props.savingsLogId} />
          </DialogContent>
       </Dialog>
    );

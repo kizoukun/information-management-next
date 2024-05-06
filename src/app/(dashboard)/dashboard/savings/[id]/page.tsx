@@ -7,11 +7,9 @@ import InviteUserDialog from "./_components/InviteUserDialog";
 import ListUsersDialog from "./_components/ListUsersDialog";
 import AddSavingsActivityDialog from "./_components/AddSavingsActivityDialog";
 import DeleteSavings from "./_components/DeleteSavings";
-import DeleteSavingsActivityDialog from "./_components/DeleteSavingsActivityDialog";
 import EditSavingsActivityDialog from "./_components/EditSavingsActivityDialog";
 import EditSavingDialog from "./_components/EditSavingDialog";
 import LineChartHero from "./_components/Chart";
-import CustomCard from "./_components/CustomCard";
 import HeaderCard from "./_components/HeaderCard";
 
 export const dynamic = "force-dynamic";
@@ -62,6 +60,11 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                   },
                   orderBy: {
                      savingTime: "desc",
+                  },
+               },
+               SavingsUser: {
+                  select: {
+                     id: true,
                   },
                },
             },
@@ -134,6 +137,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       }, 0);
    }
 
+   //TODO: fix this function somehow it's not working
    function compareAssetsPriceTodayAndYesterday(date: string) {
       const log = logs[date];
       if (!log) return 0;
@@ -180,8 +184,9 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
    let totalIncreaseThisMonth = 0;
 
    for (let i: number = 1; i <= currDate.maxDate; i++) {
-      const date = `${currDate.year}-${currDate.monthWithAdd}-${i < 10 ? `0${i}` : i
-         }`;
+      const date = `${currDate.year}-${currDate.monthWithAdd}-${
+         i < 10 ? `0${i}` : i
+      }`;
       const log = logs[date];
       const amount = log ? getAssetsPriceToday(log) : 0;
 
@@ -212,6 +217,11 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
       (totalIncreaseThisMonth / (lastMonthIncrease[0]?._sum.amount ?? 1)) * 100
    );
 
+   const percentageLastMonthWithPrediction = Math.round(
+      (totalAssetsWithPrediction / (lastMonthIncrease[0]?._sum.amount ?? 1)) *
+         100
+   );
+
    return (
       <main className="p-5 bg-slate-200">
          <div className="flex justify-between items-center ">
@@ -235,29 +245,27 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                />
             </div>
          </div>
-         <p>
-            Assets {accumulatedAssets.toLocaleString("ID-id")}{" "}
-            {percentageLastMonthIncrease}% Increase from last month
-         </p>
          <div className="mt-8 w-full grid md:grid-cols-4 gap-6">
             <HeaderCard
                title="Total Assets"
-               value="Rp 561526"
+               value={"Rp" + accumulatedAssets.toLocaleString("ID-id")}
                desc="Increase from last month"
-               percentage="56">
-            </HeaderCard>
+               percentage={percentageLastMonthIncrease}
+            ></HeaderCard>
             <HeaderCard
-               title="Total Prediction"
-               value="Rp 348.983"
+               title="Total Assets Prediction"
+               value={`Rp${Math.round(totalAssetsWithPrediction).toLocaleString(
+                  "ID-id"
+               )}`}
                desc=""
-               percentage="56">
-            </HeaderCard>
+               percentage={percentageLastMonthWithPrediction}
+            ></HeaderCard>
             <HeaderCard
                title="Users"
-               value="5"
+               value={saving.savings.SavingsUser.length}
                desc=""
-               percentage="56">
-            </HeaderCard>
+               percentage="56"
+            ></HeaderCard>
          </div>
          <div
             id="chart"
@@ -298,12 +306,40 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                   </div>
                   <div className="flex flex-row gap-5 overflow-x-auto bg-slate-200 h-auto pt-4 pb-8 px-2 element">
                      {logs[date].map((log) => (
-                        <CustomCard
-                           title="Wardana wardana wardana warnda"
-                           value="2000"
-                           desc="loremkfdskfd skdfjkdsjf"
-                           date="wend 14 feb"
-                        />
+                        <div
+                           key={log.id}
+                           className="card bg-white hover:translate-y-1 duration-200 hover:shadow-md rounded-lg h-48 min-w-48 max-w-48 py-5 px-8 grid gap-1 relative shadow-xl"
+                        >
+                           <div className="bg-white w-full h-8 block overflow-hidden">
+                              <h1 className="text-2xl font-semibold ">
+                                 {log.user.firstName}
+                              </h1>
+                           </div>
+                           <h1
+                              className={`text-2xl ${
+                                 log.type ? "text-green-600" : "text-red-500"
+                              } font-bold`}
+                           >
+                              Rp{log.amount.toLocaleString("ID-id")}
+                           </h1>
+                           <div className="max-h-12 overflow-hidden">
+                              <p className="text-xs text-slate-600">
+                                 {log.description}
+                              </p>
+                           </div>
+                           <p className="text-xs">
+                              {log.savingTime.toLocaleDateString("id-ID")}
+                           </p>
+                           <div className="bg-white">
+                              <EditSavingsActivityDialog
+                                 savingsLogId={log.id}
+                                 amount={log.amount}
+                                 description={log.description}
+                                 date={log.savingTime}
+                                 type={log.type}
+                              />
+                           </div>
+                        </div>
                      ))}
                   </div>
                </div>
