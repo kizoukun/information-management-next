@@ -1,12 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginForm() {
    const [loading, setLoading] = useState(false);
-   const router = useRouter();
    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
       event.preventDefault();
       setLoading(true);
@@ -31,7 +29,7 @@ export default function LoginForm() {
          alert(response.error);
          return;
       }
-      router.push("/dashboard");
+      window.location.href = "/dashboard";
    }
 
    return (
