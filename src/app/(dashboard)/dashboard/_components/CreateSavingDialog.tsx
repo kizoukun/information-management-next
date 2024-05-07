@@ -51,7 +51,7 @@ export default function CreateSavingDialog() {
    return (
       <Dialog open={open} onOpenChange={(d) => setOpen(!open)}>
          <DialogTrigger asChild>
-            <Button onClick={() => setOpen(!open)}>Create Savings</Button>
+            <Button onClick={() => setOpen(!open)}>Add Savings</Button>
          </DialogTrigger>
          <DialogContent className="sm:max-w-[425px]">
             <form onSubmit={handleSubmit}>
