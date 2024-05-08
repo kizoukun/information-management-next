@@ -4,6 +4,8 @@ export const CreateSavingsFormValidation = z.object({
    title: z
       .string({ required_error: "Please input the title " })
       .min(3, "Title must be at least 3 characters"),
+
+   target: z.number({ required_error: "Please input the amount" }),
 });
 
 export const InviteUserSavingsFormValidation = z.object({
@@ -66,5 +68,6 @@ export const EditSavingsFormValidation = z.object({
    title: z
       .string({ required_error: "Please input the title " })
       .min(3, "Title must be at least 3 characters"),
+   target: z.number({ required_error: "Please input the amount" }),
    savingsId: z.string({ required_error: "Please input the savings id" }),
 });

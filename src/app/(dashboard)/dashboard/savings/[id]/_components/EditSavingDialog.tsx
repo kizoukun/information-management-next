@@ -18,6 +18,7 @@ import { EditSavingsAction } from "@/server/savings/savings";
 
 export default function EditSavingDialog(props: {
    title: string;
+   target: number;
    savingsId: string;
 }) {
    const [loading, setLoading] = useState(false);
@@ -30,8 +31,13 @@ export default function EditSavingDialog(props: {
       setLoading(true);
       try {
          const form = new FormData(evt.currentTarget);
+         let target = Number(form.get("target"));
+         if (isNaN(target)) {
+            target = 0;
+         }
          const data = {
             title: form.get("title") as string,
+            target: target,
             savingsId: props.savingsId,
          };
          const response = await EditSavingsAction(data);
@@ -80,6 +86,17 @@ export default function EditSavingDialog(props: {
                         name="title"
                         className="col-span-3"
                         defaultValue={props.title}
+                     />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                     <Label htmlFor="target" className="text-right">
+                        Target
+                     </Label>
+                     <Input
+                        id="target"
+                        name="target"
+                        className="col-span-3"
+                        defaultValue={props.target}
                      />
                   </div>
                </div>

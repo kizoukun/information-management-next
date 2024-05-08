@@ -222,6 +222,10 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
          100
    );
 
+   const targetTotalPercentage = Math.round(
+      (accumulatedAssets / saving.savings.target) * 100
+   );
+
    return (
       <main className="p-5 bg-slate-200 min-h-screen">
          <div className="flex justify-between items-center ">
@@ -232,6 +236,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                      <EditSavingDialog
                         title={saving.savings.title}
                         savingsId={saving.savings.id}
+                        target={saving.savings.target}
                      />
                   </span>
                )}
@@ -264,6 +269,12 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                title="Users"
                value={saving.savings.SavingsUser.length + ""}
                desc=""
+            />
+            <HeaderCard
+               title="Target"
+               value={`Rp${saving.savings.target.toLocaleString("ID-id")}`}
+               desc="From Target"
+               percentage={targetTotalPercentage}
             />
          </div>
          <div

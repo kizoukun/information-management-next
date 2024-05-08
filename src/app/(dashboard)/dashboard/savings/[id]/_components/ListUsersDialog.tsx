@@ -10,6 +10,7 @@ import {
 import { db } from "@/lib/db";
 import Icon from "@/components/Icon";
 import DeleteUserButton from "./DeleteUserButton";
+import { SavingsLog } from "@prisma/client";
 
 export default async function ListUsersDialog(props: {
    savingsId: string;
@@ -25,6 +26,11 @@ export default async function ListUsersDialog(props: {
                      id: true,
                      firstName: true,
                      lastName: true,
+                     SavingsLog: {
+                        where: {
+                           savingsId: props.savingsId,
+                        },
+                     },
                   },
                },
             },
@@ -33,6 +39,16 @@ export default async function ListUsersDialog(props: {
    });
 
    if (!savings) return null;
+
+   function userAmount(savingLog: SavingsLog[]) {
+      return savingLog.reduce((acc, log) => {
+         if (log.type) {
+            return acc + log.amount;
+         } else {
+            return acc - log.amount;
+         }
+      }, 0);
+   }
 
    return (
       <Dialog>
@@ -57,6 +73,12 @@ export default async function ListUsersDialog(props: {
                            <Icon icon={"gg:profile"} className="w-6 h-6" />{" "}
                         </span>
                         {savingsUser.user.firstName} {savingsUser.user.lastName}
+                     </p>
+                     <p>
+                        Contribution: Rp
+                        {userAmount(savingsUser.user.SavingsLog).toLocaleString(
+                           "ID-id"
+                        )}
                      </p>
                      {savingsUser.user.id !== savings.creatorId ? (
                         <DeleteUserButton

@@ -31,6 +31,7 @@ model Savings {
    id          String        @id @default(cuid())
    title       String
    creatorId   String
+   target      Float         @default(0)
    createdAt   DateTime      @default(now())
    updatedAt   DateTime      @default(now()) @updatedAt
    SavingsLog  SavingsLog[]

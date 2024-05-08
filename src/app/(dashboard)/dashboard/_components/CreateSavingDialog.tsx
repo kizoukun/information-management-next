@@ -26,8 +26,13 @@ export default function CreateSavingDialog() {
       setLoading(true);
       try {
          const form = new FormData(evt.currentTarget);
+         let target = Number(form.get("target"));
+         if (isNaN(target)) {
+            target = 0;
+         }
          const data = {
             title: form.get("title") as string,
+            target: target,
          };
          const response = await CreateSavings(data);
          if (response.success) {
@@ -67,6 +72,12 @@ export default function CreateSavingDialog() {
                         Title
                      </Label>
                      <Input id="title" name="title" className="col-span-3" />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                     <Label htmlFor="target" className="text-right">
+                        Target
+                     </Label>
+                     <Input id="target" name="target" className="col-span-3" />
                   </div>
                </div>
                <DialogFooter>

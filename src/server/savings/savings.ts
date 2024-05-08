@@ -34,6 +34,7 @@ export async function CreateSavings(form: unknown) {
          data: {
             title: data.title,
             creatorId: user.user.id,
+            target: data.target,
          },
       });
 
@@ -301,6 +302,7 @@ export async function EditSavingsAction(form: unknown) {
       },
       data: {
          title: data.title,
+         target: data.target,
       },
    });
 
