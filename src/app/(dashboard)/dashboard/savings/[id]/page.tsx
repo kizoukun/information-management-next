@@ -10,7 +10,7 @@ import DeleteSavings from "./_components/DeleteSavings";
 import EditSavingsActivityDialog from "./_components/EditSavingsActivityDialog";
 import EditSavingDialog from "./_components/EditSavingDialog";
 import LineChartHero from "./_components/Chart";
-import HeaderCard from "./_components/HeaderCard";
+import HeaderCard from "@/components/HeaderCard";
 
 export const dynamic = "force-dynamic";
 
@@ -223,7 +223,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
    );
 
    return (
-      <main className="p-5 bg-slate-200">
+      <main className="p-5 bg-slate-200 min-h-screen">
          <div className="flex justify-between items-center ">
             <p className="text-xl font-bold flex items-center gap-2">
                Saving: {saving.savings.title}{" "}
@@ -251,21 +251,20 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                value={"Rp" + accumulatedAssets.toLocaleString("ID-id")}
                desc="Increase from last month"
                percentage={percentageLastMonthIncrease}
-            ></HeaderCard>
+            />
             <HeaderCard
                title="Total Assets Prediction"
                value={`Rp${Math.round(totalAssetsWithPrediction).toLocaleString(
                   "ID-id"
                )}`}
-               desc="Increase prediction based on current assets"
+               desc="Prediction"
                percentage={percentageLastMonthWithPrediction}
-            ></HeaderCard>
+            />
             <HeaderCard
                title="Users"
-               value={saving.savings.SavingsUser.length}
+               value={saving.savings.SavingsUser.length + ""}
                desc=""
-               percentage="56"
-            ></HeaderCard>
+            />
          </div>
          <div
             id="chart"
@@ -328,7 +327,7 @@ export default async function SavingsDetail(props: SavingsDetailProps) {
                               </p>
                            </div>
                            <p className="text-xs">
-                              {log.savingTime.toLocaleDateString("id-ID")}
+                              {log.savingTime.toDateString()}
                            </p>
                            <div className="bg-white">
                               <EditSavingsActivityDialog
